@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kush Rana's StudentVerse</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #070b19;
+    color: white;
+}
+
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    padding: 20px;
+    background: #101a32;
+    border-bottom: 2px solid cyan;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+header h2 {
+    margin: 0;
+    color: cyan;
+}
+
+button {
+    padding: 12px 18px;
+    background: linear-gradient(120deg, #087f9c, #773bd1);
+    color: white;
+    border: 1px solid cyan;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 5px;
+    font-weight: bold;
+}
+
+button:hover {
+    box-shadow: 0 0 15px cyan;
+}
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+.hero {
+    padding: 45px 25px;
+    background: linear-gradient(120deg, #142e50, #351b52);
+    border: 1px solid cyan;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+}
+
+.hero span {
+    color: cyan;
+    text-shadow: 0 0 15px cyan;
+}
+
+.hero p {
+    color: #bdc9e5;
+    line-height: 1.7;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.stat, .card, .gamebox, .quizbox {
+    background: #121d38;
+    border: 1px solid #46577f;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.stat strong {
+    display: block;
+    color: cyan;
+    font-size: 28px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.card h3 {
+    color: cyan;
+}
+
+.card p {
+    color: #b7c3df;
+}
+
+section {
+    margin-top: 40px;
+}
+
+h2 {
+    color: cyan;
+}
+
+.panel {
+    display: none;
+    background: #121d38;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 15px;
+}
+
+.panel.show {
+    display: block;
+}
+
+.quizbox {
+    margin-top: 15px;
+}
+
+.question {
+    font-size: 21px;
+    margin: 20px 0;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.options button {
+    text-align: left;
+}
+
+.correct {
+    background: #087b4b;
+}
+
+.wrong {
+    background: #9b2447;
+}
+
+.result {
+    color: #6bf4b7;
+    margin: 15px 0;
+    min-height: 25px;
+    font-weight: bold;
+}
+
+input {
+    padding: 12px;
+    background: #080f24;
+    border: 1px solid cyan;
+    border-radius: 8px;
+    color: white;
+}
+
+.gamegrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 65px);
+    justify-content: center;
+}
+
+.cell {
+    height: 65px;
+    font-size: 25px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #9aaaca;
+    border-top: 1px solid cyan;
+}
+
+@media(max-width:650px) {
+    .stats, .grid, .gamegrid {
+        grid-template-columns: 1fr;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<header>
+    <h2>⚡ KUSH RANA'S STUDENTVERSE</h2>
+
+    <nav>
+        <button onclick="go('study')">📚 Study</button>
+        <button onclick="go('quiz')">🧠 Quiz</
+            </button>
+<button onclick="go('games')">🎮 Games</button>
+</nav>
+</header>
+
+<main>
+
+<div class="hero">
+<h1>Welcome to <span>StudentVerse</span></h1>
+<h3>Learn • Play • Level Up 🚀</h3>
+<p>Created by Kush Rana. Study hard and play smart!</p>
+<button onclick="go('study')">Start Learning</button>
+<button onclick="go('games')">Play Games</button>
+</div>
+
+<div class="stats">
+<div class="stat"><strong id="xp">0 XP</strong>Total XP</div>
+<div class="stat"><strong id="gamesCount">0</strong>Games Played</div>
+<div class="stat"><strong id="rightCount">0</strong>Correct Answers</div>
+</div>
+
+<section id="study">
+<h2>📚 Study Zone</h2>
+<div class="grid">
+
+<div class="card">
+<h3>💻 C Programming</h3>
+<p>Learn C language, loops, arrays and functions.</p>
+<button onclick="showNotes('c')">Open Notes</button>
+</div>
+
+<div class="card">
+<h3>📐 Mathematics</h3>
+<p>Learn formulas and derivatives.</p>
+<button onclick="showNotes('m')">Open Notes</button>
+</div>
+
+<div class="card">
+<h3>🧪 Chemistry</h3>
+<p>Learn chemical bonding and biomolecules.</p>
+<button onclick="showNotes('ch')">Open Notes</button>
+</div>
+
+</div>
+<div class="panel" id="notes"></div>
+</section>
+
+<section id="quiz">
+<h2>🧠 Quiz Arena</h2>
+<div class="quizbox">
+<p id="qnum">Question 1</p>
+<div class="question" id="question"></div>
+<div class="options" id="options"></div>
+<div class="result" id="feedback">Choose your answer!</div>
+<button id="next" onclick="nextQ()" disabled>Next Question</button>
+<button onclick="resetQuiz()">Restart Quiz</button>
+</div>
+</section>
+
+<section id="games">
+<h2>🎮 Gaming Zone</h2>
+<div class="gamegrid">
+
+<div class="gamebox">
+<h3>🔢 Number Guess</h3>
+<input type="number" id="guessInput" placeholder="1 to 10">
+<button onclick="guess()">Check</button>
+<button onclick="newGuess()">New Game</button>
+<div id="guessResult" class="result"></div>
+</div>
+
+<div class="gamebox">
+<h3>✊ Rock Paper Scissors</h3>
+<button onclick="rps('Rock')">Rock</button>
+<button onclick="rps('Paper')">Paper</button>
+<button onclick="rps('Scissors')">Scissors</button>
+<div id="rpsResult" class="result"></div>
+</div>
+
+<div class="gamebox">
+<h3>⭕ Tic Tac Toe</h3>
+<div class="board" id="board"></div>
+<div id="ticMsg" class="result">Player X Turn</div>
+<button onclick="resetTic()">Restart</button>
+</div>
+
+<div class="gamebox">
+<h3>✨ Motivation</h3>
+<p id="quote">Never stop learning!</p>
+<button onclick="newQuote()">New Motivation</button>
+</div>
+
+</div>
+</section>
+</main>
+
+<footer>Made by Kush Rana ❤️ | StudentVerse 2026</footer>
+
+<script>
+
+function go(id) {
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+let xp=0, games=0, correct=0;
+
+function stats(){
+document.getElementById("xp").innerText=xp+" XP";
+document.getElementById("gamesCount").innerText=games;
+document.getElementById("rightCount").innerText=correct;
+}
+
+function earn(n){
+xp+=n;
+stats();
+}
+
+function showNotes(s){
+let data={
+c:"<h3>C Programming</h3><p>Array stores multiple values of same data type.<br>Loop repeats statements.<br>Function is a reusable block of code.</p>",
+m:"<h3>Mathematics</h3><p>Derivative of x² = 2x.<br>Derivative of x³ = 3x².</p>",
+ch:"<h3>Chemistry</h3><p>Ionic bond involves electron transfer.<br>Covalent bond involves sharing electrons.</p>"
+};
+let p=document.getElementById("notes");
+p.innerHTML=data[s]+'<button onclick="earn(5)">Complete Revision +5 XP</button>';
+p.classList.add("show");
+}
+
+const questions=[
+["Array indexing in C starts from?",["0","1","2","3"],0],
+["Which operator gives remainder?",["/","*","%","+"],2],
+["Integer format specifier?",["%f","%d","%c","%s"],1],
+["Derivative of x²?",["x","2x","x³","2"],1],
+["sin 90° equals?",["0","1","-1","2"],1],
+["Formula of water?",["CO2","H2O","O2","NaCl"],1],
+["Which bond shares electrons?",["Ionic","Covalent","Metallic","None"],1],
+["Which sugar occurs in RNA?",["Ribose","Glucose","Sucrose","None"],0],
+["Red planet?",["Earth","Mars","Venus","Jupiter"],1]
+];
+
+let deck=[],index=0,round=1,answered=false;
+
+function shuffle(a){
+return [...a].sort(()=>Math.random()-.5);
+}
+
+function loadQuestion(){
+if(index>=deck.length){
+deck=shuffle(questions);
+index=0;
+round++;
+}
+answered=false;
+let q=deck[index];
+document.getElementById("qnum").innerText="Question "+(index+1)+" | Round "+round;
+document.getElementById("question").innerText=q[0];
+document.getElementById("feedback").innerText="Choose your answer!";
+document.getElementById("next").disabled=true;
+
+let box=document.getElementById("options");
+box.innerHTML="";
+
+q[1].forEach((v,i)=>{
+let b=document.createElement("button");
+b.innerText=v;
+b.onclick=()=>checkAnswer(i);
+box.appendChild(b);
+});
+}
+
+function checkAnswer(i){
+if(answered)return;
+answered=true;
+let q=deck[index];
+let buttons=document.querySelectorAll("#options button");
+
+buttons.forEach((b,j)=>{
+b.disabled=true;
+if(j===q[2])b.classList.add("correct");
+else if(j===i)b.classList.add("wrong");
+});
+
+if(i===q[2]){
+correct++;
+earn(10);
+document.getElementById("feedback").innerText="Correct! +10 XP 🎉";
+}else{
+document.getElementById("feedback").innerText="Wrong Answer! Try again next time.";
+}
+
+document.getElementById("next").disabled=false;
+stats();
+}
+
+function nextQ(){
+if(!answered)return;
+index++;
+loadQuestion();
+}
+
+function resetQuiz(){
+correct=0;
+index=0;
+round=1;
+deck=shuffle(questions);
+stats();
+loadQuestion();
+}
+
+deck=shuffle(questions);
+loadQuestion();
+
+// NUMBER GUESS GAME
+
+let secret=Math.floor(Math.random()*10)+1;
+
+function guess(){
+let v=Number(document.getElementById("guessInput").value);
+let r=document.getElementById("guessResult");
+
+if(!v||v<1||v>10){
+r.innerText="Enter number between 1 and 10";
+return;
+}
+
+if(v===secret){
+r.innerText="Congratulations! You Win +10 XP";
+earn(10);
+games++;
+secret=Math.floor(Math.random()*10)+1;
+}else{
+r.innerText=v<secret?"Too Low!":"Too High!";
+}
+stats();
+}
+
+function newGuess(){
+secret=Math.floor(Math.random()*10)+1;
+document.getElementById("guessInput").value="";
+document.getElementById("guessResult").innerText="New Game Started!";
+}
+
+// ROCK PAPER SCISSORS
+
+function rps(user){
+let a=["Rock","Paper","Scissors"];
+let computer=a[Math.floor(Math.random()*3)];
+
+let win=(user==="Rock"&&computer==="Scissors")||
+(user==="Paper"&&computer==="Rock")||
+(user==="Scissors"&&computer==="Paper");
+
+games++;
+if(win)earn(5);
+
+document.getElementById("rpsResult").innerText=
+"You: "+user+" | Computer: "+computer+
+" | "+(user===computer?"Draw":win?"You Win! +5 XP":"Computer Wins!");
+
+stats();
+}
+
+// TIC TAC TOE
+
+let cells=Array(9).fill("");
+let turn="X",ended=false;
+
+function drawBoard(){
+let board=document.getElementById("board");
+board.innerHTML="";
+cells.forEach((v,i)=>{
+let b=document.createElement("button");
+b.className="cell";
+b.innerText=v;
+b.onclick=()=>play(i);
+board.appendChild(b);
+});
+}
+
+function play(i){
+if(cells[i]||ended)return;
+cells[i]=turn;
+
+let lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+let win=lines.some(([a,b,c])=>cells[a]&&cells[a]===cells[b]&&cells[b]===cells[c]);
+
+if(win){
+ended=true;
+document.getElementById("ticMsg").innerText="Player "+turn+" Wins!";
+earn(10);
+games++;
+}else if(cells.every(v=>v)){
+ended=true;
+document.getElementById("ticMsg").innerText="Game Draw!";
+games++;
+}else{
+turn=turn==="X"?"O":"X";
+document.getElementById("ticMsg").innerText="Player "+turn+" Turn";
+}
+drawBoard();
+stats();
+}
+
+function resetTic(){
+cells=Array(9).fill("");
+turn="X";
+ended=false;
+document.getElementById("ticMsg").innerText="Player X Turn";
+drawBoard();
+}
+
+// MOTIVATION
+
+let quotes=[
+"Never stop learning!",
+"Work hard and achieve your dreams!",
+"Practice makes progress!",
+"Believe in yourself!"
+];
+
+function newQuote(){
+document.getElementById("quote").innerText=
+quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+// ANIMATED PARTICLES
+
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+let dots=[];
+
+function resize(){
+canvas.width=innerWidth*devicePixelRatio;
+canvas.height=innerHeight*devicePixelRatio;
+ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+
+dots=Array.from({length:65},()=>({
+x:Math.random()*innerWidth,
+y:Math.random()*innerHeight,
+dx:(Math.random()-.5)*.5,
+dy:(Math.random()-.5)*.5
+}));
+}
+
+function animate(){
+ctx.clearRect(0,0,innerWidth,innerHeight);
+
+dots.forEach((d,i)=>{
+d.x+=d.dx;
+d.y+=d.dy;
+
+if(d.x<0||d.x>innerWidth)d.dx*=-1;
+if(d.y<0||d.y>innerHeight)d.dy*=-1;
+
+ctx.beginPath();
+ctx.arc(d.x,d.y,2,0,Math.PI*2);
+ctx.fillStyle="cyan";
+ctx.fill();
+
+for(let j=i+1;j<dots.length;j++){
+let e=dots[j];
+if(Math.hypot(d.x-e.x,d.y-e.y)<120){
+ctx.beginPath();
+ctx.moveTo(d.x,d.y);
+ctx.lineTo(e.x,e.y);
+ctx.strokeStyle="rgba(100,180,255,0.2)";
+ctx.stroke();
+}
+}
+});
+
+requestAnimationFrame(animate);
+}
+
+window.addEventListener("resize",resize);
+resize();
+animate();
+stats();
+
+</script>
+</body>
+</html>
